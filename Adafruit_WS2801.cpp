@@ -1,5 +1,7 @@
-#include "SPI.h"
 #include "Adafruit_WS2801.h"
+#ifndef NO_SPI
+  #include "SPI.h"
+#endif
 
 // Example to control WS2801-based RGB LED Modules in a strand or strip
 // Written by Adafruit - MIT license
@@ -86,7 +88,9 @@ void Adafruit_WS2801::updatePins(uint8_t dpin, uint8_t cpin) {
 
   if(begun == true) { // If begin() was previously invoked...
     // If previously using hardware SPI, turn that off:
+#ifndef NO_SPI
     if(hardwareSPI == true) SPI.end();
+#endif
     // Regardless, now enable output on 'soft' SPI pins:
     pinMode(dpin, OUTPUT);
     pinMode(cpin, OUTPUT);
@@ -106,10 +110,12 @@ void Adafruit_WS2801::updatePins(uint8_t dpin, uint8_t cpin) {
 
 // Enable SPI hardware and set up protocol details:
 void Adafruit_WS2801::startSPI(void) {
+#ifndef NO_SPI
     SPI.begin();
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
     SPI.setClockDivider(SPI_CLOCK_DIV16); // 1 MHz max, else flicker
+#endif
 }
 
 uint16_t Adafruit_WS2801::numPixels(void) {
@@ -137,10 +143,12 @@ void Adafruit_WS2801::show(void) {
 
   // Write 24 bits per pixel:
   if(hardwareSPI) {
+#ifndef NO_SPI
     for(i=0; i<nl3; i++) {
       SPDR = pixels[i];
       while(!(SPSR & (1<<SPIF)));
     }
+#endif
   } else {
     for(i=0; i<nl3; i++ ) {
       for(bit=0x80; bit; bit >>= 1) {

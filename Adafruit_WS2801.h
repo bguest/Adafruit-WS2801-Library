@@ -8,6 +8,8 @@
  #include <pins_arduino.h>
 #endif
 
+#define NO_SPI
+
 // Not all LED pixels are RGB order; 36mm type expects GRB data.
 // Optional flag to constructors indicates data order (default if
 // unspecified is RGB).  As long as setPixelColor/getPixelColor are
