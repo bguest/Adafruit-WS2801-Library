@@ -112,9 +112,10 @@ void Adafruit_WS2801::updatePins(uint8_t dpin, uint8_t cpin) {
 void Adafruit_WS2801::startSPI(void) {
 #ifndef NO_SPI
     SPI.begin();
-    SPI.setBitOrder(MSBFIRST);
-    SPI.setDataMode(SPI_MODE0);
-    SPI.setClockDivider(SPI_CLOCK_DIV16); // 1 MHz max, else flicker
+    SPI.beginTransaction(SPISettings(1000, MSBFIRST, SPI_MODE0));
+    //SPI.setBitOrder(MSBFIRST);
+    //SPI.setDataMode(SPI_MODE0);
+    //SPI.setClockDivider(SPI_CLOCK_DIV64); // 1 MHz max, else flicker
 #endif
 }
 
